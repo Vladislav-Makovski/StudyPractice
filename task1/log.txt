@@ -1,0 +1,11 @@
+commit 9c73dcabbf62789b10a8240354ea60f24aa81ac9 (HEAD -> master)
+Author: Vladislav Makovski <makovskivladislav@mail.ru>
+Date:   Sun Feb 11 20:50:44 2018 +0300
+
+    add status.txt
+
+commit b9dfff5f7f11814423de07c4b06631ca1b4d54fb
+Author: Vladislav Makovski <makovskivladislav@mail.ru>
+Date:   Sun Feb 11 20:40:00 2018 +0300
+
+    add.gitignore
