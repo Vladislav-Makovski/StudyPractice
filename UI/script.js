@@ -1,4 +1,4 @@
-var module = (function () {
+﻿var module = (function () {
     var photoPosts = [
 
         {
@@ -242,7 +242,7 @@ var module = (function () {
             validity = false;
         }
         if (!photoPost.photoLink) {
-            validity = false
+            validity = false;
         }
         if (photoPost.hashtags[0].charAt(0) != '#') {
             validity = false;
