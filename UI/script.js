@@ -1,4 +1,4 @@
-﻿var module = (function () {
+var module = (function () {
     var photoPosts = [
 
         {
@@ -183,71 +183,109 @@
         }
     ];
 
-    function get(filterConfig, skipNumber, topNumber) {
+    function get(filterConfig, skipNumber = 0, topNumber = 10) {
+        var resultAuthor;
+        var resultHashtags;
+        var resultCreatedAt;
         var result = photoPosts.slice();
-        if (!skipNumber) {
-            skipNumber = 0;
-        }
-        if (!topNumber) {
-            topNumber = 10;
+        if (typeof skipNumber !== 'number' || typeof topNumber !== 'number') {
+            console.log("typeError in getPhotoPosts");
+            return;
         }
         if (!filterConfig) {
+            result.sort(function (a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
             return result.splice(skipNumber, topNumber);
         }
-        if (filterConfig) {
-            if (filterConfig.author) {
-                result = result.filter(function (post) {
-                    if (post.author == filterConfig.author) {
-                        return post;
+        if (filterConfig.author) {
+            resultAuthor = photoPosts.slice();
+            resultAuthor = resultAuthor.filter(function (post) {
+                if (post.author === filterConfig.author) {
+                    return post;
+                }
+            });
+        }
+        if (filterConfig.hashtags) {
+            resultHashtags = photoPosts.slice();
+            resultHashtags = resultHashtags.filter(function (post) {
+                for (var i = 0; i < filterConfig.hashtags.length; i++) {
+                    for (var j = 0; j < post.hashtags.length; j++) {
+                        if (post.hashtags[j] === filterConfig.hashtags[i]) {
+                            return post;
+                        }
                     }
-                });
-                return result.slice(skipNumber, topNumber);
+                }
+            });
+        }
+        if (filterConfig.createdAt) {
+            resultCreatedAt = photoPosts.slice();
+            resultCreatedAt = resultCreatedAt.filter(function (post) {
+                if ((post.createdAt - filterConfig.createdAt[0] >= 0) && (filterConfig.createdAt[1] - post.createdAt >= 0)) {
+                    return post;
+                }
+            });
+        }
+        var res = resAll(resultAuthor, resultCreatedAt, resultHashtags);
+        res.sort(function (a, b) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        return res.slice(skipNumber, topNumber);
+    }
+
+    function resAll(array1, array2, array3) {
+        var i = 0;
+        var index;
+        var res;
+        while (i < 3) {
+            if (arguments[i] !== undefined) {
+                res = arguments[i];
+                index = i;
+                break;
             }
-            if (filterConfig.hashtags) {
-                result = result.filter(function (post) {
-                    if (post.hashtags == filterConfig.hashtags) {
-                        return post;
-                    }
-                });
-                return result.slice(skipNumber, topNumber);
-            }
-            if (filterConfig.createdAt) {
-                result = result.filter(function (post) {
-                    if (filterConfig.createdAt - post.createdAt == 0) {
-                        return post;
-                    }
-                });
-                return result.slice(skipNumber, topNumber);
+            i++;
+        }
+        for (var j = 0; j < arguments.length; j++) {
+            if ((arguments[j] !== undefined) && (j !== index)) {
+                res = res.concat(arguments[j]);
             }
         }
+        return res;
     }
 
     function getOnePost(id) {
         return photoPosts.find(function (post) {
-            return post.id == id;
+            return post.id === id;
         });
     }
 
     function validate(photoPost) {
-        var validity = true;
-        for (var i = 0; i < photoPosts.length; i++) {
-            if (photoPosts[i].id == photoPost.id) {
+        if (photoPost === null) {
+            return false;
+        }
+        else {
+            var validity = true;
+            for (var i = 0; i < photoPosts.length; i++) {
+                if (photoPosts[i].id === photoPost.id) {
+                    validity = false;
+                }
+            }
+            if ((!photoPost.author) || (photoPost.author.length > 30)) {
                 validity = false;
             }
+            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200)) {
+                validity = false;
+            }
+            if (!photoPost.photoLink) {
+                validity = false;
+            }
+            for (var i = 0; i < photoPost.hashtags.length; i++) {
+                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20)) {
+                    validity = false;
+                }
+                return validity;
+            }
         }
-        if (!photoPost.author) {
-            validity = false;
-        }
-        if (!photoPost.descriprion) {
-            validity = false;
-        }
-        if (!photoPost.photoLink) {
-            validity = false;
-        }
-        if (photoPost.hashtags[0].charAt(0) != '#') {
-            validity = false;
-        }
-        return validity;
     }
 
     function addPost(photoPost) {
@@ -258,20 +296,20 @@
         else {
             return false;
         }
-
     }
 
+//удаляет фотопост из массива по id пример: console.log(module.removePhotoPost(1));
     function removePost(id) {
-        var a = 0;
+        var flag = false
         photoPosts = photoPosts.filter(function (post) {
             if (post.id != id) {
                 return post;
             }
             else {
-                a++;
+                flag = true;
             }
         });
-        if (a == 0) {
+        if (!flag) {
             return false;
         }
         else {
@@ -279,10 +317,9 @@
         }
     }
 
+//проверяю хэштеги на валидность и заношу их в поле хэштег предварительно очистив это поле в массиве фотопостов
     function editPost(id, photoPost) {
         var flag = false;
-        var hashtagsFlag = true;
-        var likeFlag = true;
         for (var i = 0; i < photoPosts.length; i++) {
             if (photoPosts[i].id == id) {
                 var index = i;
@@ -291,10 +328,7 @@
             }
         }
         if (flag) {
-            if (photoPost.author) {
-                photoPosts[index].author = photoPost.author;
-            }
-            if (photoPost.descriprion) {
+            if ((photoPost.descriprion) || (photoPost.descriprion.length > 200)) {
                 photoPosts[index].descriprion = photoPost.descriprion;
             }
             if (photoPost.photoLink) {
@@ -302,34 +336,16 @@
             }
             if (photoPost.hashtags) {
                 for (var i = 0; i < photoPost.hashtags.length; i++) {
-                    if (photoPost.hashtags[i] == '') {
-                        hashtagsFlag = false;
+                    if ((photoPost.hashtags[i] === '') || ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20))) {
+                        flag = false;
                     }
                 }
-                for (var j = 0; j < photoPost.hashtags.length; j++) {
-                    if (photoPost.hashtags[j].charAt(0) != '#') {
-                        hashtagsFlag = false;
+                if (flag) {
+                    photoPosts[index].hashtags = [];
+                    for (var j = 0; j < photoPost.hashtags.length; j++) {
+                        photoPosts[index].hashtags[j] = photoPost.hashtags[j];
                     }
                 }
-                if (hashtagsFlag) {
-                    photoPosts[index].hashtags = photoPost.hashtags;
-                }
-            }
-            if (photoPost.createdAt) {
-                photoPosts[index].createdAt = photoPost.createdAt;
-            }
-            if (photoPost.likes) {
-                for (var i = 0; i < photoPost.likes.length; i++) {
-                    if (photoPost.likes[i] == '') {
-                        likeFlag = false;
-                    }
-                }
-                if (likeFlag) {
-                    photoPosts[index].likes = photoPost.likes;
-                }
-            }
-            if ((!likeFlag) || (!hashtagsFlag)) {
-                flag = false;
             }
         }
         return flag;
@@ -344,3 +360,4 @@
         editPhotoPost: editPost
     }
 }());
+
