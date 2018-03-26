@@ -179,50 +179,53 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/20.jpg',
             likes: ['Javno'],
-            hashtags: ['#classmates', '#friend']
+            hashtags: ['#classmates', '#friend','#davai','#go']
         }
     ];
 
     function get(filterConfig, skipNumber = 0, topNumber = 10) {
-        var validHashtag = true;
         var result = photoPosts.slice();
         if ((typeof skipNumber !== 'number') || (typeof topNumber !== 'number')) {
             console.log("typeError in getPhotoPosts");
             return;
         }
-        if (filterConfig === undefined) {
-            result.sort(function (a, b) {
-                return new Date(b.createdAt) - new Date(a.createdAt);
-            });
-            return result.splice(skipNumber, topNumber);
+        if (!filterConfig) {
         }
-        if (filterConfig.author) {
-            result = result.filter(function (post) {
-                if (post.author === filterConfig.author) {
-                    return post;
-                }
-            });
-        }
-        if (filterConfig.hashtags) {
-            result = result.filter(function (post) {
-                if (post.hashtags.length === filterConfig.hashtags.length) {
-                    for (var i = 0; i < filterConfig.hashtags.length; i++) {
-                        if (post.hashtags[i] !== filterConfig.hashtags[i]) {
-                            validHashtag = false;
-                        }
-                    }
-                    if (validHashtag) {
+        else {
+            if (filterConfig.author) {
+                result = result.filter(function (post) {
+                    if (post.author === filterConfig.author) {
                         return post;
                     }
-                }
-            });
-        }
-        if (filterConfig.createdAt) {
-            result = result.filter(function (post) {
-                if ((post.createdAt - filterConfig.createdAt[0] >= 0) && (filterConfig.createdAt[1] - post.createdAt >= 0)) {
-                    return post;
-                }
-            });
+                });
+            }
+            if (filterConfig.hashtags) {
+                result = result.filter(function (post) {
+                    for (var i = 0; i < filterConfig.hashtags.length; i++){
+                        var findHashtag = 0;
+                        var validHashtag = true;
+                            for (var j = 0; j < post.hashtags.length; j++ ) {
+                                if (post.hashtags[j] === filterConfig.hashtags[i]) {
+                                    findHashtag++;
+                                }
+                            }
+                        if (findHashtag === 0) {
+                            validHashtag = false;
+                            break;
+                        }
+                        }
+                        if (validHashtag) {
+                            return post;
+                        }
+                });
+            }
+            if (filterConfig.createdAt) {
+                result = result.filter(function (post) {
+                    if ((post.createdAt - filterConfig.createdAt[0] >= 0) && (filterConfig.createdAt[1] - post.createdAt >= 0)) {
+                        return post;
+                    }
+                });
+            }
         }
         result.sort(function (a, b) {
             return new Date(b.createdAt) - new Date(a.createdAt);
@@ -247,21 +250,30 @@ var module = (function () {
                     isValid = false;
                 }
             }
-            if ((!photoPost.author) || (photoPost.author.length > 30)||(typeof photoPost.author !== "string")) {
+            if (typeof photoPost.id !== "string" || photoPost.id.length === 0) {
                 isValid = false;
             }
-            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200)||(typeof photoPost.descriprion !== "string")) {
+            if ((!photoPost.author) || (photoPost.author.length > 30) || (typeof photoPost.author !== "string")) {
                 isValid = false;
             }
-            if ((!photoPost.photoLink)||(typeof photoPost.photoLink !== "string")) {
+            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== "string")) {
+                isValid = false;
+            }
+            if ((!photoPost.photoLink) || (typeof photoPost.photoLink !== "string")) {
                 isValid = false;
             }
             for (var i = 0; i < photoPost.hashtags.length; i++) {
-                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20)||(typeof photoPost.hashtags[i] !== "string")) {
+                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== "string")) {
                     isValid = false;
                 }
-                return isValid;
             }
+            if (!(photoPost.likes instanceof Array)) {
+                isValid = false;
+            }
+            if (!(photoPost.createdAt instanceof Date)) {
+                isValid = false;
+            }
+            return isValid;
         }
     }
 
@@ -275,7 +287,6 @@ var module = (function () {
         }
     }
 
-//удаляет фотопост из массива по id пример: console.log(module.removePhotoPost(1));
     function removePost(id) {
         var isDelete = false
         photoPosts = photoPosts.filter(function (post) {
@@ -289,7 +300,6 @@ var module = (function () {
        return isDelete;
     }
 
-//проверяю хэштеги на валидность и заношу их в поле хэштег предварительно очистив это поле в массиве фотопостов
     function editPost(id, photoPost) {
         var isFound = false;
         for (var i = 0; i < photoPosts.length; i++) {
@@ -299,6 +309,7 @@ var module = (function () {
                 break;
             }
         }
+        //тут проверяю на photoPost = null   console.log(module.editPhotoPost('1',null)); выводит false
         if ((isFound) && (photoPost)) {
             if ((photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== "string")) {
                 photoPosts[index].descriprion = photoPost.descriprion;
