@@ -167,7 +167,7 @@ var module = (function () {
             id: '19',
             descriprion: 'Следуй за мной',
             createdAt: new Date('2018-02-28T05:00:00'),
-            author: 'Lovelace',
+            author: 'Kyivstoner',
             photoLink: 'img/19.jpg',
             likes: ['Butter'],
             hashtags: ['#field']
@@ -179,78 +179,55 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/20.jpg',
             likes: ['Javno'],
-            hashtags: ['#classmates']
+            hashtags: ['#classmates', '#friend']
         }
     ];
 
     function get(filterConfig, skipNumber = 0, topNumber = 10) {
-        var resultAuthor;
-        var resultHashtags;
-        var resultCreatedAt;
+        var validHashtag = true;
         var result = photoPosts.slice();
-        if (typeof skipNumber !== 'number' || typeof topNumber !== 'number') {
+        if ((typeof skipNumber !== 'number') || (typeof topNumber !== 'number')) {
             console.log("typeError in getPhotoPosts");
             return;
         }
-        if (!filterConfig) {
+        if (filterConfig === undefined) {
             result.sort(function (a, b) {
                 return new Date(b.createdAt) - new Date(a.createdAt);
             });
             return result.splice(skipNumber, topNumber);
         }
         if (filterConfig.author) {
-            resultAuthor = photoPosts.slice();
-            resultAuthor = resultAuthor.filter(function (post) {
+            result = result.filter(function (post) {
                 if (post.author === filterConfig.author) {
                     return post;
                 }
             });
         }
         if (filterConfig.hashtags) {
-            resultHashtags = photoPosts.slice();
-            resultHashtags = resultHashtags.filter(function (post) {
-                for (var i = 0; i < filterConfig.hashtags.length; i++) {
-                    for (var j = 0; j < post.hashtags.length; j++) {
-                        if (post.hashtags[j] === filterConfig.hashtags[i]) {
-                            return post;
+            result = result.filter(function (post) {
+                if (post.hashtags.length === filterConfig.hashtags.length) {
+                    for (var i = 0; i < filterConfig.hashtags.length; i++) {
+                        if (post.hashtags[i] !== filterConfig.hashtags[i]) {
+                            validHashtag = false;
                         }
+                    }
+                    if (validHashtag) {
+                        return post;
                     }
                 }
             });
         }
         if (filterConfig.createdAt) {
-            resultCreatedAt = photoPosts.slice();
-            resultCreatedAt = resultCreatedAt.filter(function (post) {
+            result = result.filter(function (post) {
                 if ((post.createdAt - filterConfig.createdAt[0] >= 0) && (filterConfig.createdAt[1] - post.createdAt >= 0)) {
                     return post;
                 }
             });
         }
-        var res = resAll(resultAuthor, resultCreatedAt, resultHashtags);
-        res.sort(function (a, b) {
+        result.sort(function (a, b) {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
-        return res.slice(skipNumber, topNumber);
-    }
-
-    function resAll(array1, array2, array3) {
-        var i = 0;
-        var index;
-        var res;
-        while (i < 3) {
-            if (arguments[i] !== undefined) {
-                res = arguments[i];
-                index = i;
-                break;
-            }
-            i++;
-        }
-        for (var j = 0; j < arguments.length; j++) {
-            if ((arguments[j] !== undefined) && (j !== index)) {
-                res = res.concat(arguments[j]);
-            }
-        }
-        return res;
+        return result.slice(skipNumber, topNumber);
     }
 
     function getOnePost(id) {
@@ -260,30 +237,30 @@ var module = (function () {
     }
 
     function validate(photoPost) {
-        if (photoPost === null) {
+        if (!photoPost) {
             return false;
         }
         else {
-            var validity = true;
+            var isValid = true;
             for (var i = 0; i < photoPosts.length; i++) {
                 if (photoPosts[i].id === photoPost.id) {
-                    validity = false;
+                    isValid = false;
                 }
             }
-            if ((!photoPost.author) || (photoPost.author.length > 30)) {
-                validity = false;
+            if ((!photoPost.author) || (photoPost.author.length > 30)||(typeof photoPost.author !== "string")) {
+                isValid = false;
             }
-            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200)) {
-                validity = false;
+            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200)||(typeof photoPost.descriprion !== "string")) {
+                isValid = false;
             }
-            if (!photoPost.photoLink) {
-                validity = false;
+            if ((!photoPost.photoLink)||(typeof photoPost.photoLink !== "string")) {
+                isValid = false;
             }
             for (var i = 0; i < photoPost.hashtags.length; i++) {
-                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20)) {
-                    validity = false;
+                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20)||(typeof photoPost.hashtags[i] !== "string")) {
+                    isValid = false;
                 }
-                return validity;
+                return isValid;
             }
         }
     }
@@ -300,35 +277,30 @@ var module = (function () {
 
 //удаляет фотопост из массива по id пример: console.log(module.removePhotoPost(1));
     function removePost(id) {
-        var flag = false
+        var isDelete = false
         photoPosts = photoPosts.filter(function (post) {
-            if (post.id != id) {
+            if (post.id !== id) {
                 return post;
             }
             else {
-                flag = true;
+                isDelete = true;
             }
         });
-        if (!flag) {
-            return false;
-        }
-        else {
-            return true;
-        }
+       return isDelete;
     }
 
 //проверяю хэштеги на валидность и заношу их в поле хэштег предварительно очистив это поле в массиве фотопостов
     function editPost(id, photoPost) {
-        var flag = false;
+        var isFound = false;
         for (var i = 0; i < photoPosts.length; i++) {
-            if (photoPosts[i].id == id) {
+            if (photoPosts[i].id === id) {
                 var index = i;
-                flag = true;
+                isFound = true;
                 break;
             }
         }
-        if (flag) {
-            if ((photoPost.descriprion) || (photoPost.descriprion.length > 200)) {
+        if ((isFound) && (photoPost)) {
+            if ((photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== "string")) {
                 photoPosts[index].descriprion = photoPost.descriprion;
             }
             if (photoPost.photoLink) {
@@ -336,11 +308,12 @@ var module = (function () {
             }
             if (photoPost.hashtags) {
                 for (var i = 0; i < photoPost.hashtags.length; i++) {
-                    if ((photoPost.hashtags[i] === '') || ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20))) {
-                        flag = false;
+                    if ((photoPost.hashtags[i] === '') || (photoPost.hashtags[i].charAt(0) !== '#') ||
+                        (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== "string")) {
+                        isFound = false;
                     }
                 }
-                if (flag) {
+                if (isFound) {
                     photoPosts[index].hashtags = [];
                     for (var j = 0; j < photoPost.hashtags.length; j++) {
                         photoPosts[index].hashtags[j] = photoPost.hashtags[j];
@@ -348,7 +321,10 @@ var module = (function () {
                 }
             }
         }
-        return flag;
+        else {
+            isFound = false;
+        }
+        return isFound;
     }
 
     return {
@@ -360,4 +336,3 @@ var module = (function () {
         editPhotoPost: editPost
     }
 }());
-
