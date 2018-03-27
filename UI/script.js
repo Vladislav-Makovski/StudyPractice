@@ -179,7 +179,7 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/20.jpg',
             likes: ['Javno'],
-            hashtags: ['#classmates', '#friend','#davai','#go']
+            hashtags: ['#classmates', '#friend', '#davai', '#go']
         }
     ];
 
@@ -190,8 +190,7 @@ var module = (function () {
             return;
         }
         if (!filterConfig) {
-        }
-        else {
+        } else {
             if (filterConfig.author) {
                 result = result.filter(function (post) {
                     if (post.author === filterConfig.author) {
@@ -201,22 +200,22 @@ var module = (function () {
             }
             if (filterConfig.hashtags) {
                 result = result.filter(function (post) {
-                    for (var i = 0; i < filterConfig.hashtags.length; i++){
+                    for (var i = 0; i < filterConfig.hashtags.length; i++) {
                         var findHashtag = 0;
                         var validHashtag = true;
-                            for (var j = 0; j < post.hashtags.length; j++ ) {
-                                if (post.hashtags[j] === filterConfig.hashtags[i]) {
-                                    findHashtag++;
-                                }
+                        for (var j = 0; j < post.hashtags.length; j++) {
+                            if (post.hashtags[j] === filterConfig.hashtags[i]) {
+                                findHashtag++;
                             }
+                        }
                         if (findHashtag === 0) {
                             validHashtag = false;
                             break;
                         }
-                        }
-                        if (validHashtag) {
-                            return post;
-                        }
+                    }
+                    if (validHashtag) {
+                        return post;
+                    }
                 });
             }
             if (filterConfig.createdAt) {
@@ -242,8 +241,7 @@ var module = (function () {
     function validate(photoPost) {
         if (!photoPost) {
             return false;
-        }
-        else {
+        } else {
             var isValid = true;
             for (var i = 0; i < photoPosts.length; i++) {
                 if (photoPosts[i].id === photoPost.id) {
@@ -281,8 +279,7 @@ var module = (function () {
         if (validate(photoPost)) {
             photoPosts.push(photoPost);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -292,12 +289,11 @@ var module = (function () {
         photoPosts = photoPosts.filter(function (post) {
             if (post.id !== id) {
                 return post;
-            }
-            else {
+            } else {
                 isDelete = true;
             }
         });
-       return isDelete;
+        return isDelete;
     }
 
     function editPost(id, photoPost) {
@@ -331,8 +327,7 @@ var module = (function () {
                     }
                 }
             }
-        }
-        else {
+        } else {
             isFound = false;
         }
         return isFound;
