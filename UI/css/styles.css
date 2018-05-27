@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
-/*font-family: 'Roboto Slab', serif;*/
+﻿@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+
 * {
     margin: 0;
     padding: 0;
+}
+
+.username {
+    display: block;
 }
 
 body, html {
@@ -24,7 +28,7 @@ a:hover {
 
 hr {
     display: block;
-    hight: 1px;
+    height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
     margin: 1em 0;
@@ -56,9 +60,14 @@ header > div.logo > p {
     .panel {
         float: left;
         width: 37%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
 
     .exit {
+        display: block;
         float: right;
         width: 10%;
     }
@@ -152,6 +161,9 @@ header > div.logo > p {
 
 /*конец стилей для шапки*/
 @media (min-width: 1060px) {
+.change{
+    display: inline-block;
+}
 
     p7 {
         visibility: hidden;
@@ -376,7 +388,8 @@ img {
     margin: 5% auto;
     padding: 0.5em;
     transition: all 0.3s;
-    font-size: 80%
+    font-size: 80%;
+    cursor: pointer;
 }
 
 .change:hover {
@@ -394,12 +407,12 @@ img {
     padding: 0.5em;
     transition: all 0.3s;
     font-size: 80%;
+    cursor: pointer;
 }
 
 .delete:hover {
     box-shadow: 0px -5px 0 #881a14 inset;
 }
-
 .like {
     background: #eee;
     color: #f738b4;
@@ -411,8 +424,58 @@ img {
     padding: 0.5em;
     transition: all 0.3s;
     font-size: 80%;
+    cursor: pointer;
 }
 
 .like:hover {
     box-shadow: 0px -5px 0 #f738b4 inset;
 }
+
+/*pL{*/
+    /*background: #eee;*/
+    /*color: #f738b4;*/
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    /*width: 5em;*/
+    /*text-align: center;*/
+    /*margin: 5% auto;*/
+    /*padding: 0.5em;*/
+    /*transition: all 0.3s;*/
+    /*font-size: 80%;*/
+    /*cursor: pointer;*/
+/*}*/
+/*pL:hover{*/
+    /*box-shadow: 0px -5px 0 #f738b4 inset;*/
+/*}*/
+/*pC{*/
+    /*background: #eee;*/
+    /*color: #088;*/
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    /*width: 7.5em;*/
+    /*text-align: center;*/
+    /*margin: 5% auto;*/
+    /*padding: 0.5em;*/
+    /*transition: all 0.3s;*/
+    /*font-size: 80%;*/
+    /*cursor: pointer;*/
+/*}*/
+/*pC:hover{*/
+    /*box-shadow: 0px -5px 0 #088 inset;*/
+/*}*/
+/*pD{*/
+    /*background: #eee;*/
+    /*color: #881a14;*/
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    /*width: 4em;*/
+    /*text-align: center;*/
+    /*margin: 5% auto;*/
+    /*padding: 0.5em;*/
+    /*transition: all 0.3s;*/
+    /*font-size: 80%;*/
+    /*cursor: pointer;*/
+/*}*/
+/*pD:hover{*/
+    /*box-shadow: 0px -5px 0 #881a14 inset;*/
+/*}*/

@@ -179,9 +179,23 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/20.jpg',
             likes: ['Javno'],
-            hashtags: ['#classmates', '#friend', '#davai', '#go']
+            hashtags: ['#davai', '#classmates', '#friend', '#go']
         }
     ];
+
+    let user = {
+        login: "Владислав",
+        password: "123"
+    };
+
+    let getUser = function () {
+        return user;
+    };
+
+    let setUser = function (login, password) {
+        user.login = login;
+        user.password = password;
+    };
 
     function get(filterConfig, skipNumber = 0, topNumber = 10) {
         var result = photoPosts.slice();
@@ -285,7 +299,7 @@ var module = (function () {
     }
 
     function removePost(id) {
-        var isDelete = false
+        var isDelete = false;
         photoPosts = photoPosts.filter(function (post) {
             if (post.id !== id) {
                 return post;
@@ -333,12 +347,139 @@ var module = (function () {
         return isFound;
     }
 
+    function countPost() {
+        return photoPosts.length;
+    }
+    function getMas() {
+        return photoPosts;
+
+    }
+
     return {
+        getMas: getMas,
         getPhotoPosts: get,
         getPhotoPost: getOnePost,
         validatePhotoPost: validate,
         addPhotoPost: addPost,
         removePhotoPost: removePost,
-        editPhotoPost: editPost
+        editPhotoPost: editPost,
+        getUser: getUser,
+        countPost: countPost
     }
 }());
+
+var DomModulePlus = (function () {
+
+    let showedPosts = 0;
+
+    function initUser() {
+        if (module.getUser().login === "") {
+            document.getElementsByClassName("btn")[0].innerHTML = "Войти";
+            document.getElementsByClassName("username")[0].style.display = "none";
+        }else {
+            document.getElementsByClassName("username")[0].style.display = "block";
+            document.getElementsByClassName("username")[0].innerHTML = module.getUser().login;
+            document.getElementsByClassName("btn")[0].innerHTML = "Выйти";
+        }
+    }
+
+    function addPhotoPostBlock(photoPost) {
+        module.addPhotoPost(photoPost);
+        let postsFlex = document.getElementsByClassName("postsFlex")[0];
+        let newPost = createNewPost(photoPost);
+        postsFlex.appendChild(newPost);
+        showedPosts++;
+    }
+
+    function createNewPost(photoPost) {
+
+        let photoFlex = document.createElement('div');
+        photoFlex.className = "photoFlex";
+        photoFlex.id = photoPost.id;
+
+        let photo = document.createElement('div');
+        photo.className = "photo";
+
+        let image = document.createElement('img');
+        image.src = photoPost.photoLink;
+        image.alt = "Альтернативный текст";
+        photo.appendChild(image);
+
+        let info = document.createElement('div');
+        info.className = "info";
+
+        let author = document.createElement('p');
+        author.innerHTML = photoPost.author;
+
+        let createdAt = document.createElement('p');
+        createdAt.innerHTML = photoPost.createdAt;
+
+        let hashtags = document.createElement('p');
+        hashtags.innerHTML = photoPost.hashtags;
+
+        let descriprion = document.createElement('p');
+        descriprion.innerHTML = photoPost.descriprion;
+
+        let changeBtn = document.createElement('p');
+        changeBtn.className = "change" ;
+        changeBtn.innerHTML = "Редактировать";
+
+        let deleteBtn = document.createElement('p');
+        deleteBtn.className = "delete";
+        deleteBtn.innerHTML = "Удалить";
+
+        let likeBtn = document.createElement('p');
+        likeBtn.className = "like";
+        likeBtn.innerHTML = "Нравится";
+
+        info.appendChild(author);
+        info.appendChild(createdAt);
+        info.appendChild(hashtags);
+        info.appendChild(descriprion);
+        info.appendChild(changeBtn);
+        info.appendChild(deleteBtn);
+        info.appendChild(likeBtn);
+
+        photoFlex.appendChild(photo);
+        photoFlex.appendChild(info);
+
+        return photoFlex;
+
+    }
+
+    function editPhotoPostBlock(id, newPhotoPost) {
+        module.editPhotoPost(id, newPhotoPost);
+        let oldPhotoPost = document.getElementById(id);
+        let newPostBlock = createNewPost(module.getPhotoPost(newPhotoPost.id));
+        let content = document.getElementsByClassName("postsFlex")[0];
+        content.replaceChild(newPostBlock, oldPhotoPost);
+    }
+
+    function displayPhotoPosts(photoPosts) {
+        let content = document.getElementsByClassName("postsFlex")[0];
+        for (let i = 0; i < photoPosts.length; i++) {
+            content.appendChild(createNewPost(photoPosts[i]));
+            showedPosts++;
+        }
+    }
+
+    function removePhotoPostBlock(id) {
+        let content = document.getElementsByClassName("postsFlex")[0];
+        content.removeChild(document.getElementById(id));
+        showedPosts--;
+        module.removePhotoPost(id);
+        console.log(module.countPost());
+    }
+
+    return {
+        initUser: initUser,
+        displayPosts: displayPhotoPosts,
+        addPost: addPhotoPostBlock,
+        createPost: createNewPost,
+        editPost: editPhotoPostBlock,
+        removePost: removePhotoPostBlock
+    }
+
+
+}());
+
