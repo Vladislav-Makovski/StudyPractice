@@ -1,5 +1,5 @@
-var module = (function () {
-    var photoPosts = [
+const module = (function () {
+    let photoPosts = [
 
         {
             id: '1',
@@ -8,7 +8,7 @@ var module = (function () {
             author: 'Picasso',
             photoLink: 'img/1.jpg',
             likes: ['Pavel'],
-            hashtags: ['#morning']
+            hashtags: ['#morning'],
         },
         {
             id: '2',
@@ -17,7 +17,7 @@ var module = (function () {
             author: 'Michelangelo',
             photoLink: 'img/2.jpg',
             likes: ['Kate'],
-            hashtags: ['#trip']
+            hashtags: ['#trip'],
         },
         {
             id: '3',
@@ -26,7 +26,7 @@ var module = (function () {
             author: 'Raphael',
             photoLink: 'img/3.jpg',
             likes: ['NaVi'],
-            hashtags: ['#nightСity']
+            hashtags: ['#nightСity'],
         },
         {
             id: '4',
@@ -35,7 +35,7 @@ var module = (function () {
             author: 'Donatello',
             photoLink: 'img/4.jpg',
             likes: ['Skrip'],
-            hashtags: ['#forest']
+            hashtags: ['#forest'],
         },
         {
             id: '5',
@@ -44,7 +44,7 @@ var module = (function () {
             author: 'Leonardo',
             photoLink: 'img/5.jpg',
             likes: ['Simple'],
-            hashtags: ['#dawn']
+            hashtags: ['#dawn'],
         },
         {
             id: '6',
@@ -53,7 +53,7 @@ var module = (function () {
             author: 'Snoop Dog',
             photoLink: 'img/6.jpg',
             likes: ['Zeus'],
-            hashtags: ['#love']
+            hashtags: ['#love'],
         },
         {
             id: '7',
@@ -62,7 +62,7 @@ var module = (function () {
             author: 'Drake',
             photoLink: 'img/7.jpg',
             likes: ['KanyeWest', 'Horse'],
-            hashtags: ['#egypt']
+            hashtags: ['#egypt'],
         },
         {
             id: '8',
@@ -71,7 +71,7 @@ var module = (function () {
             author: '2Pac',
             photoLink: 'img/8.jpg',
             likes: ['Karl', 'Lucy'],
-            hashtags: ['#rain']
+            hashtags: ['#rain'],
         },
         {
             id: '9',
@@ -80,7 +80,7 @@ var module = (function () {
             author: 'McFlurry',
             photoLink: 'img/9.jpg',
             likes: ['Guf'],
-            hashtags: ['#myFavoriteGirl']
+            hashtags: ['#myFavoriteGirl'],
         },
         {
             id: '10',
@@ -89,7 +89,7 @@ var module = (function () {
             author: 'Obladaet',
             photoLink: 'img/10.jpg',
             likes: ['Fake'],
-            hashtags: ['#winterTrip']
+            hashtags: ['#winterTrip'],
         },
         {
             id: '11',
@@ -98,7 +98,7 @@ var module = (function () {
             author: 'Rocket',
             photoLink: 'img/11.jpg',
             likes: ['Doctor'],
-            hashtags: ['#minsk']
+            hashtags: ['#minsk'],
         },
         {
             id: '12',
@@ -107,7 +107,7 @@ var module = (function () {
             author: 'Rabbit',
             photoLink: 'img/12.jpg',
             likes: ['Robert'],
-            hashtags: ['#lyceumBSU']
+            hashtags: ['#lyceumBSU'],
         },
         {
             id: '13',
@@ -116,7 +116,7 @@ var module = (function () {
             author: 'Ice',
             photoLink: 'img/13.jpg',
             likes: ['Viola'],
-            hashtags: ['#warsaw']
+            hashtags: ['#warsaw'],
         },
         {
             id: '14',
@@ -125,7 +125,7 @@ var module = (function () {
             author: 'Tramp',
             photoLink: 'img/14.jpg',
             likes: ['Priest'],
-            hashtags: ['#basilica']
+            hashtags: ['#basilica'],
         },
         {
             id: '15',
@@ -134,7 +134,7 @@ var module = (function () {
             author: 'Pascal',
             photoLink: 'img/15.jpg',
             likes: ['MaxPane'],
-            hashtags: ['#fountain']
+            hashtags: ['#fountain'],
         },
         {
             id: '16',
@@ -143,7 +143,7 @@ var module = (function () {
             author: 'HomeBoy',
             photoLink: 'img/16.jpg',
             likes: ['Dori', 'Polly'],
-            hashtags: ['#squad']
+            hashtags: ['#squad'],
         },
         {
             id: '17',
@@ -152,7 +152,7 @@ var module = (function () {
             author: 'Traveler',
             photoLink: 'img/17.jpg',
             likes: ['Juli', 'Egerag'],
-            hashtags: ['#underground']
+            hashtags: ['#underground'],
         },
         {
             id: '18',
@@ -161,7 +161,7 @@ var module = (function () {
             author: 'Photographer',
             photoLink: 'img/18.jpg',
             likes: ['PashaFast'],
-            hashtags: ['#see']
+            hashtags: ['#see'],
         },
         {
             id: '19',
@@ -170,7 +170,7 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/19.jpg',
             likes: ['Butter'],
-            hashtags: ['#field']
+            hashtags: ['#field'],
         },
         {
             id: '20',
@@ -179,32 +179,25 @@ var module = (function () {
             author: 'Kyivstoner',
             photoLink: 'img/20.jpg',
             likes: ['Javno'],
-            hashtags: ['#davai', '#classmates', '#friend', '#go']
-        }
+            hashtags: ['#davai', '#classmates', '#friend', '#go'],
+        },
     ];
 
-    let user = {
-        login: "Владислав",
-        password: "123"
+    const user = {
+        login: 'Владислав',
+        password: '123',
     };
 
-    let getUser = function () {
+    const getCurrentUser = function () {
         return user;
     };
-
-    let setUser = function (login, password) {
-        user.login = login;
-        user.password = password;
-    };
-
     function get(filterConfig, skipNumber = 0, topNumber = 10) {
-        var result = photoPosts.slice();
+        let result = photoPosts.slice();
         if ((typeof skipNumber !== 'number') || (typeof topNumber !== 'number')) {
-            console.log("typeError in getPhotoPosts");
+            console.log('typeError in getPhotoPosts');
             return;
         }
-        if (!filterConfig) {
-        } else {
+        if (filterConfig) {
             if (filterConfig.author) {
                 result = result.filter(function (post) {
                     if (post.author === filterConfig.author) {
@@ -214,10 +207,11 @@ var module = (function () {
             }
             if (filterConfig.hashtags) {
                 result = result.filter(function (post) {
-                    for (var i = 0; i < filterConfig.hashtags.length; i++) {
-                        var findHashtag = 0;
-                        var validHashtag = true;
-                        for (var j = 0; j < post.hashtags.length; j++) {
+                    let validHashtag;
+                    for (let i = 0; i < filterConfig.hashtags.length; i++) {
+                        let findHashtag = 0;
+                         validHashtag = true;
+                        for (let j = 0; j < post.hashtags.length; j++) {
                             if (post.hashtags[j] === filterConfig.hashtags[i]) {
                                 findHashtag++;
                             }
@@ -256,26 +250,26 @@ var module = (function () {
         if (!photoPost) {
             return false;
         } else {
-            var isValid = true;
-            for (var i = 0; i < photoPosts.length; i++) {
+            let isValid = true;
+            for (let i = 0; i < photoPosts.length; i++) {
                 if (photoPosts[i].id === photoPost.id) {
                     isValid = false;
                 }
             }
-            if (typeof photoPost.id !== "string" || photoPost.id.length === 0) {
+            if (typeof photoPost.id !== 'string' || photoPost.id.length === 0) {
                 isValid = false;
             }
-            if ((!photoPost.author) || (photoPost.author.length > 30) || (typeof photoPost.author !== "string")) {
+            if ((!photoPost.author) || (photoPost.author.length > 30) || (typeof photoPost.author !== 'string')) {
                 isValid = false;
             }
-            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== "string")) {
+            if ((!photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== 'string')) {
                 isValid = false;
             }
-            if ((!photoPost.photoLink) || (typeof photoPost.photoLink !== "string")) {
+            if ((!photoPost.photoLink) || (typeof photoPost.photoLink !== 'string')) {
                 isValid = false;
             }
-            for (var i = 0; i < photoPost.hashtags.length; i++) {
-                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== "string")) {
+            for (let i = 0; i < photoPost.hashtags.length; i++) {
+                if ((photoPost.hashtags[i].charAt(0) !== '#') || (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== 'string')) {
                     isValid = false;
                 }
             }
@@ -299,7 +293,7 @@ var module = (function () {
     }
 
     function removePost(id) {
-        var isDelete = false;
+        let isDelete = false;
         photoPosts = photoPosts.filter(function (post) {
             if (post.id !== id) {
                 return post;
@@ -311,32 +305,32 @@ var module = (function () {
     }
 
     function editPost(id, photoPost) {
-        var isFound = false;
-        for (var i = 0; i < photoPosts.length; i++) {
+        let isFound = false;
+        let index;
+        for (let i = 0; i < photoPosts.length; i++) {
             if (photoPosts[i].id === id) {
-                var index = i;
+                 index = i;
                 isFound = true;
                 break;
             }
         }
-        //тут проверяю на photoPost = null   console.log(module.editPhotoPost('1',null)); выводит false
         if ((isFound) && (photoPost)) {
-            if ((photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== "string")) {
+            if ((photoPost.descriprion) || (photoPost.descriprion.length > 200) || (typeof photoPost.descriprion !== 'string')) {
                 photoPosts[index].descriprion = photoPost.descriprion;
             }
             if (photoPost.photoLink) {
                 photoPosts[index].photoLink = photoPost.photoLink;
             }
             if (photoPost.hashtags) {
-                for (var i = 0; i < photoPost.hashtags.length; i++) {
+                for (let i = 0; i < photoPost.hashtags.length; i++) {
                     if ((photoPost.hashtags[i] === '') || (photoPost.hashtags[i].charAt(0) !== '#') ||
-                        (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== "string")) {
+                        (photoPost.hashtags[i].length > 20) || (typeof photoPost.hashtags[i] !== 'string')) {
                         isFound = false;
                     }
                 }
                 if (isFound) {
                     photoPosts[index].hashtags = [];
-                    for (var j = 0; j < photoPost.hashtags.length; j++) {
+                    for (let j = 0; j < photoPost.hashtags.length; j++) {
                         photoPosts[index].hashtags[j] = photoPost.hashtags[j];
                     }
                 }
@@ -347,90 +341,76 @@ var module = (function () {
         return isFound;
     }
 
-    function countPost() {
+    function countOfPost() {
         return photoPosts.length;
     }
-    function getMas() {
+    function getPhotoMas() {
         return photoPosts;
-
     }
 
     return {
-        getMas: getMas,
+        getMas: getPhotoMas,
         getPhotoPosts: get,
         getPhotoPost: getOnePost,
         validatePhotoPost: validate,
         addPhotoPost: addPost,
         removePhotoPost: removePost,
         editPhotoPost: editPost,
-        getUser: getUser,
-        countPost: countPost
-    }
+        getUser: getCurrentUser,
+        countPost: countOfPost,
+    };
 }());
 
-var DomModulePlus = (function () {
-
-    let showedPosts = 0;
-
-    function initUser() {
-        if (module.getUser().login === "") {
-            document.getElementsByClassName("btn")[0].innerHTML = "Войти";
-            document.getElementsByClassName("username")[0].style.display = "none";
-        }else {
-            document.getElementsByClassName("username")[0].style.display = "block";
-            document.getElementsByClassName("username")[0].innerHTML = module.getUser().login;
-            document.getElementsByClassName("btn")[0].innerHTML = "Выйти";
+const DomModulePlus = (function () {
+    function initCurrentUser() {
+        if (module.getUser().login === '') {
+            document.getElementsByClassName('btn')[0].innerHTML = 'Войти';
+            document.getElementsByClassName('username')[0].style.display = 'none';
+        } else {
+            document.getElementsByClassName('username')[0].style.display = 'block';
+            document.getElementsByClassName('username')[0].innerHTML = module.getUser().login;
+            document.getElementsByClassName('btn')[0].innerHTML = 'Выйти';
         }
     }
-
-    function addPhotoPostBlock(photoPost) {
-        module.addPhotoPost(photoPost);
-        let postsFlex = document.getElementsByClassName("postsFlex")[0];
-        let newPost = createNewPost(photoPost);
-        postsFlex.appendChild(newPost);
-        showedPosts++;
-    }
-
     function createNewPost(photoPost) {
-
-        let photoFlex = document.createElement('div');
-        photoFlex.className = "photoFlex";
+        const photoFlex = document.createElement('div');
+        photoFlex.className = 'photoFlex';
         photoFlex.id = photoPost.id;
 
-        let photo = document.createElement('div');
-        photo.className = "photo";
+        const photo = document.createElement('div');
+        photo.className = 'photo';
 
-        let image = document.createElement('img');
+        const image = document.createElement('img');
         image.src = photoPost.photoLink;
-        image.alt = "Альтернативный текст";
+        image.alt = 'Альтернативный текст';
         photo.appendChild(image);
 
-        let info = document.createElement('div');
-        info.className = "info";
+        const info = document.createElement('div');
+        info.className = 'info';
 
-        let author = document.createElement('p');
+        const author = document.createElement('p');
         author.innerHTML = photoPost.author;
 
-        let createdAt = document.createElement('p');
+        const createdAt = document.createElement('p');
         createdAt.innerHTML = photoPost.createdAt;
 
-        let hashtags = document.createElement('p');
+        const hashtags = document.createElement('p');
         hashtags.innerHTML = photoPost.hashtags;
 
-        let descriprion = document.createElement('p');
+        const descriprion = document.createElement('p');
         descriprion.innerHTML = photoPost.descriprion;
 
-        let changeBtn = document.createElement('p');
-        changeBtn.className = "change" ;
-        changeBtn.innerHTML = "Редактировать";
+        const changeBtn = document.createElement('p');
+        changeBtn.className = 'change';
+        changeBtn.innerHTML = 'Редактировать';
 
-        let deleteBtn = document.createElement('p');
-        deleteBtn.className = "delete";
-        deleteBtn.innerHTML = "Удалить";
+        const deleteBtn = document.createElement('p');
+        deleteBtn.className = 'delete';
+        deleteBtn.innerHTML = 'Удалить';
 
-        let likeBtn = document.createElement('p');
-        likeBtn.className = "like";
-        likeBtn.innerHTML = "Нравится";
+        const likeBtn = document.createElement('p');
+        likeBtn.className = 'like';
+        likeBtn.innerHTML = 'Нравится';
 
         info.appendChild(author);
         info.appendChild(createdAt);
@@ -444,42 +424,42 @@ var DomModulePlus = (function () {
         photoFlex.appendChild(info);
 
         return photoFlex;
-
     }
-
+    function addPhotoPostBlock(photoPost) {
+        module.addPhotoPost(photoPost);
+        const postsFlex = document.getElementsByClassName('postsFlex')[0];
+        const newPost = createNewPost(photoPost);
+        postsFlex.appendChild(newPost);
+    }
     function editPhotoPostBlock(id, newPhotoPost) {
         module.editPhotoPost(id, newPhotoPost);
-        let oldPhotoPost = document.getElementById(id);
-        let newPostBlock = createNewPost(module.getPhotoPost(newPhotoPost.id));
-        let content = document.getElementsByClassName("postsFlex")[0];
+        const oldPhotoPost = document.getElementById(id);
+        const newPostBlock = createNewPost(module.getPhotoPost(newPhotoPost.id));
+        const content = document.getElementsByClassName('postsFlex')[0];
         content.replaceChild(newPostBlock, oldPhotoPost);
     }
 
     function displayPhotoPosts(photoPosts) {
-        let content = document.getElementsByClassName("postsFlex")[0];
+        const content = document.getElementsByClassName('postsFlex')[0];
         for (let i = 0; i < photoPosts.length; i++) {
             content.appendChild(createNewPost(photoPosts[i]));
-            showedPosts++;
         }
     }
 
     function removePhotoPostBlock(id) {
-        let content = document.getElementsByClassName("postsFlex")[0];
+        const content = document.getElementsByClassName('postsFlex')[0];
         content.removeChild(document.getElementById(id));
-        showedPosts--;
         module.removePhotoPost(id);
         console.log(module.countPost());
     }
 
     return {
-        initUser: initUser,
+        initUser: initCurrentUser,
         displayPosts: displayPhotoPosts,
         addPost: addPhotoPostBlock,
         createPost: createNewPost,
         editPost: editPhotoPostBlock,
-        removePost: removePhotoPostBlock
-    }
-
-
+        removePost: removePhotoPostBlock,
+    };
 }());
-
+DomModulePlus.displayPosts(module.getPhotoPosts(null, 0, 20));

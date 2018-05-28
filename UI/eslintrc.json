@@ -1,0 +1,23 @@
+{"extends": "airbnb",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi" : 2,
+    "linebreak-style" : "off",
+    "indent" : "off",
+    "no-plusplus" : "off",
+    "consistent-return" : "off",
+    "array-callback-return" : "off",
+    "prefer-arrow-callback" : "off",
+    "max-len": "off",
+    "no-else-return":"off",
+    "no-undef": "off",
+    "wrap-iife":"off",
+    "no-unused-vars":"off"
+  }
+}
